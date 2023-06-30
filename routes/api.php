@@ -25,3 +25,9 @@ Route::get('/barang/{id}', 'API\BarangAPIController@getById');
 Route::post('/barang', 'API\BarangAPIController@create');
 Route::put('/barang', 'API\BarangAPIController@update');
 Route::delete('/barang/{id}', 'API\BarangAPIController@delete');
+
+Route::get('/outlet', 'API\OutletAPIController@list');
+Route::get('/outlet/{id}', 'API\OutletAPIController@getById');
+Route::post('/outlet', 'API\OutletAPIController@create');
+Route::put('/outlet', 'API\OutletAPIController@update');
+Route::delete('/outlet/{id}', 'API\OutletAPIController@delete');
