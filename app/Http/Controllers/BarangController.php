@@ -15,7 +15,7 @@ class BarangController extends Controller
     public function index()
     {
         $products = Barang::all()->toArray();
-        return view('barang.index', compact('products'));  
+        return view('barang.index', compact('products'));
     }
 
     /**
@@ -25,7 +25,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        
+
         return view('barang.create');
     }
 
