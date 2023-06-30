@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-
 @section('title','Edit Data Barang')
-
 
 @section('content')
 <div class="p-5 mb-3">
