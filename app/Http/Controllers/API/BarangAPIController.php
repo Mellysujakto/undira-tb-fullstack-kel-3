@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Http\Controllers\API;
-
 
 use App\Barang;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 
 class BarangAPIController extends Controller
 {
@@ -18,14 +15,11 @@ class BarangAPIController extends Controller
         return response()->json($list, 200);
     }
 
-
     public function getById($id)
     {
         $detail = Barang::find($id);
         return response()->json($detail, 200);
     }
-
-
 
 
     public function create(Request $request)
@@ -41,8 +35,6 @@ class BarangAPIController extends Controller
     }
 
 
-
-
     public function update(Request $request)
     {
         $id = $request->input('id');
@@ -54,16 +46,12 @@ class BarangAPIController extends Controller
             return response()->json('id and kode_barang is required', 400);
         }
 
-
         Barang::where('id', $id)
             ->update($request->all());
         $result = Barang::find($id);
 
-
         return response()->json($result, 200);
     }
-
-
 
 
     public function delete($id)
