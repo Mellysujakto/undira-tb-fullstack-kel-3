@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,11 +12,28 @@
 |
 */
 
+
+Route::group(['middleware' => 'auth'], function () {
+
+
 Route::get('/', function () {
-    return view('welcome');
+return view('home');
 });
+
 
 Route::resource('sales', 'SalesController');
 Route::resource('barang', 'BarangController');
 Route::resource('outlet', 'OutletController');
 Route::resource('survey', 'SurveyStockController');
+});
+
+
+Auth::routes();
+
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+
+

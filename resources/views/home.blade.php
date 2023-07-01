@@ -16,7 +16,7 @@ yang ingin kamu gunakan melalui navigasi yang ada!</p>
 </div>
 
 
-<div class="p-5 mb-4 rounded-3" id="data">
+  <div class="p-5 mb-4 rounded-3" id="data">
 <div class="row">
 <div class="col-md-4">
 <div class="card">
@@ -51,6 +51,4 @@ yang ingin kamu gunakan melalui navigasi yang ada!</p>
 </div>
 </div>
 @endsection
-
-
 
