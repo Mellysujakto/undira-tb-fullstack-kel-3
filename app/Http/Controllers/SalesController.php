@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Sales;
+use App\Models\Sales;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
@@ -15,7 +15,7 @@ class SalesController extends Controller
     public function index()
     {
         $products = Sales::all()->toArray();
-        return view('sales.index', compact('products'));   
+        return view('sales.index', compact('products'));
     }
 
     /**

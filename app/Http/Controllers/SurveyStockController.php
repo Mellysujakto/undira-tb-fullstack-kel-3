@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Barang;
-use App\Outlet;
-use App\Sales;
-use App\SurveyStock;
+use App\Models\Barang;
+use App\Models\Outlet;
+use App\Models\Sales;
+use App\Models\SurveyStock;
 use Illuminate\Http\Request;
 
 class SurveyStockController extends Controller
@@ -18,7 +18,7 @@ class SurveyStockController extends Controller
     public function index()
     {
         $products = SurveyStock::all()->toArray();
-        return view('survey.index', compact('products'));   
+        return view('survey.index', compact('products'));
     }
 
     /**
