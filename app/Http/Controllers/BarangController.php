@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Barang;
+use App\Http\Client\HttpClient;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -14,7 +14,8 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $products = Barang::all()->toArray();
+        $response = HttpClient::get('api/barang');
+        $products = json_decode($response->getContent(), true);
         return view('barang.index', compact('products'));
     }
 
@@ -25,7 +26,6 @@ class BarangController extends Controller
      */
     public function create()
     {
-
         return view('barang.create');
     }
 
@@ -37,14 +37,17 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $product = $this->validate(request(), [
+        $this->validate(request(), [
             'kode_barang' => 'required',
             'nama_barang' => 'required',
             'stok' => 'required',
             'harga_barang' => 'required'
-            ]);
-            Barang::create($product);
-            return redirect('barang')->with('success', 'Barang berhasil ditambahkan');;
+        ]);
+        $response = HttpClient::post('api/barang', [], [], [], [], $request->getContent());
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal ditambahkan');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -66,8 +69,9 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        $product = Barang::find($id);
-        return view('barang.edit',compact('product','id'));
+        $response = HttpClient::get("api/barang/$id");
+        $product = json_decode($response->getContent());
+        return view('barang.edit', compact('product', 'id'));
     }
 
     /**
@@ -79,19 +83,18 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Barang::find($id);
         $this->validate(request(), [
-        'kode_barang' => 'required',
-        'nama_barang' => 'required',
-        'stok' => 'required',
-        'harga_barang' => 'required'
+            'kode_barang' => 'required',
+            'nama_barang' => 'required',
+            'stok' => 'required',
+            'harga_barang' => 'required'
         ]);
-        $product->kode_barang = $request->get('kode_barang');
-        $product->nama_barang = $request->get('nama_barang');
-        $product->stok = $request->get('stok');
-        $product->harga_barang = $request->get('harga_barang');
-        $product->save();
-        return redirect('barang')->with('success','Barang berhasil diperbarui');
+        $request->merge(['id' => $id]);
+        $response = HttpClient::put('api/barang', [], [], [], [], $request->getContent());
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal diperbarui');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil diperbarui');
     }
 
     /**
@@ -102,8 +105,10 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        $product = Barang::find($id);
-        $product->delete();
-        return redirect('barang')->with('success','Barang berhasil dihapus');
+        $response = HttpClient::delete("api/barang/$id");
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal dihapus');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil dihapus');
     }
 }

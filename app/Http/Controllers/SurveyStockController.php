@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Barang;
-use App\Outlet;
-use App\Sales;
-use App\SurveyStock;
+use App\Http\Client\HttpClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SurveyStockController extends Controller
 {
@@ -17,8 +15,9 @@ class SurveyStockController extends Controller
      */
     public function index()
     {
-        $products = SurveyStock::all()->toArray();
-        return view('survey.index', compact('products'));   
+        $response = HttpClient::get('api/survey');
+        $products = json_decode($response->getContent(), true);
+        return view('survey.index', compact('products'));
     }
 
     /**
@@ -28,10 +27,11 @@ class SurveyStockController extends Controller
      */
     public function create()
     {
-        $barang = Barang::all()->toArray();
-        $outlet = Outlet::all()->toArray();
-        $sales = Sales::all()->toArray();
-        return view('survey.create',compact('barang','outlet','sales'));
+        $responseBarang = HttpClient::get('api/barang');
+        $barang = json_decode($responseBarang->getContent(), true);
+        $responseOutlet = HttpClient::get('api/outlet');
+        $outlet = json_decode($responseOutlet->getContent(), true);
+        return view('survey.create', compact('barang', 'outlet'));
     }
 
     /**
@@ -43,15 +43,17 @@ class SurveyStockController extends Controller
     public function store(Request $request)
     {
         $product = $this->validate(request(), [
-            'nama_sales' => 'required',
             'nama_outlet' => 'required',
             'nama_barang' => 'required',
             'jumlah_stok' => 'required',
             'jumlah_display' => 'required',
-            'visit_datetime' => 'required'
-            ]);
-            SurveyStock::create($product);
-            return redirect('survey')->with('success', 'Data survey berhasil ditambahkan');;
+        ]);
+        $request->merge(['nama_sales' => Auth::user()->name]);
+        $response = HttpClient::post('api/survey', [], [], [], [], $request->getContent());
+        if ($response->status() >= 400) {
+            return redirect('survey')->with('failed', 'Data survey gagal ditambahkan');
+        }
+        return redirect('survey')->with('success', 'Data survey berhasil ditambahkan');;
     }
 
     /**
@@ -96,8 +98,10 @@ class SurveyStockController extends Controller
      */
     public function destroy($id)
     {
-        $product = SurveyStock::find($id);
-        $product->delete();
-        return redirect('survey')->with('success','Survey berhasil dihapus');
+        $response = HttpClient::delete("api/survey/$id");
+        if ($response->status() >= 400) {
+            return redirect('survey')->with('failed', 'Survey gagal dihapus');
+        }
+        return redirect('survey')->with('success', 'Survey berhasil dihapus');
     }
 }
