@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Outlet;
 use App\Http\Controllers\Controller;
+use App\Models\Outlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,8 +50,12 @@ class OutletAPIController extends Controller
             return response()->json('id, nama_outlet, lokasi_outlet, and nama_pj are required', 400);
         }
 
-        Outlet::where('id', $id)
-            ->update($request->all());
+        $product = Outlet::find($id);
+        $product->nama_outlet = $request->get('nama_outlet');
+        $product->lokasi_outlet = $request->get('lokasi_outlet');
+        $product->nama_pj = $request->get('nama_pj');
+        $product->save();
+
         $result = Outlet::find($id);
 
         return response()->json($result, 200);
