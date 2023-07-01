@@ -93,7 +93,7 @@ class UserAPIController extends Controller
         $product->name = $request->get('name');
         $product->email = $request->get('email');
         $product->role = $role;
-        if ($request->get('password') != null) {
+        if ($request->get('password') != null && $request->get('password') != $product->password) {
             $product->password = Hash::make($request->get('password'));
         }
         $product->save();
