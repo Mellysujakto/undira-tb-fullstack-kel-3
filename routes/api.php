@@ -20,7 +20,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
+
 Route::group(['middleware' => 'auth.api'], function () {
+
+    Route::get('/user', 'API\UserAPIController@list');
+    Route::get('/user/sales', 'API\UserAPIController@listSales');
+    Route::get('/user/admin', 'API\UserAPIController@listAdmin');
+    Route::get('/user/{id}', 'API\UserAPIController@getById');
+    Route::post('/user', 'API\UserAPIController@create');
+    Route::put('/user', 'API\UserAPIController@update');
+    Route::delete('/user/{id}', 'API\UserAPIController@delete');
+
     Route::get('/barang', 'API\BarangAPIController@list');
     Route::get('/barang/{id}', 'API\BarangAPIController@getById');
     Route::post('/barang', 'API\BarangAPIController@create');
