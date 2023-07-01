@@ -15,13 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// TODO(melly): remove, since a temporary comment
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
-
 Route::group(['middleware' => 'auth.api'], function () {
 
     Route::get('/user', 'API\UserAPIController@list');
