@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class BarangController extends Controller
 {
@@ -14,7 +14,10 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $products = Barang::all()->toArray();
+        $request = Request::create('api/barang', 'GET');
+        // $request->headers->set('Authorization', 'Bearer' . 'Z2nAm1p9KKKQYqgsMfENevBXkFP8HBazRiXO90tMiuyWX9V3FIf5gZiD1fLM');
+        $response = Route::dispatch($request);
+        $products = json_decode($response->getContent(), true);
         return view('barang.index', compact('products'));
     }
 
@@ -25,7 +28,6 @@ class BarangController extends Controller
      */
     public function create()
     {
-
         return view('barang.create');
     }
 
@@ -37,14 +39,18 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $product = $this->validate(request(), [
+        $this->validate(request(), [
             'kode_barang' => 'required',
             'nama_barang' => 'required',
             'stok' => 'required',
             'harga_barang' => 'required'
-            ]);
-            Barang::create($product);
-            return redirect('barang')->with('success', 'Barang berhasil ditambahkan');;
+        ]);
+        $req = Request::create('api/barang', 'POST', [], [], [], [], $request->getContent());
+        $response = Route::dispatch($req);
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal ditambahkan');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -66,8 +72,10 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        $product = Barang::find($id);
-        return view('barang.edit',compact('product','id'));
+        $request = Request::create("api/barang/$id", 'GET');
+        $response = Route::dispatch($request);
+        $product = json_decode($response->getContent());
+        return view('barang.edit', compact('product', 'id'));
     }
 
     /**
@@ -79,19 +87,19 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Barang::find($id);
         $this->validate(request(), [
-        'kode_barang' => 'required',
-        'nama_barang' => 'required',
-        'stok' => 'required',
-        'harga_barang' => 'required'
+            'kode_barang' => 'required',
+            'nama_barang' => 'required',
+            'stok' => 'required',
+            'harga_barang' => 'required'
         ]);
-        $product->kode_barang = $request->get('kode_barang');
-        $product->nama_barang = $request->get('nama_barang');
-        $product->stok = $request->get('stok');
-        $product->harga_barang = $request->get('harga_barang');
-        $product->save();
-        return redirect('barang')->with('success','Barang berhasil diperbarui');
+        $request->merge(['id' => $id]);
+        $req = Request::create('api/barang', 'PUT', [], [], [], [], $request->getContent());
+        $response = Route::dispatch($req);
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal diperbarui');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil diperbarui');
     }
 
     /**
@@ -102,8 +110,11 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        $product = Barang::find($id);
-        $product->delete();
-        return redirect('barang')->with('success','Barang berhasil dihapus');
+        $request = Request::create("api/barang/$id", 'DELETE');
+        $response = Route::dispatch($request);
+        if ($response->status() >= 400) {
+            return redirect('barang')->with('failed', 'Barang gagal dihapus');
+        }
+        return redirect('barang')->with('success', 'Barang berhasil dihapus');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Outlet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class OutletController extends Controller
 {
@@ -14,8 +14,10 @@ class OutletController extends Controller
      */
     public function index()
     {
-        $products = Outlet::all()->toArray();
-        return view('outlet.index', compact('products'));  
+        $request = Request::create('api/outlet', 'GET');
+        $response = Route::dispatch($request);
+        $products = json_decode($response->getContent(), true);
+        return view('outlet.index', compact('products'));
     }
 
     /**
@@ -36,13 +38,17 @@ class OutletController extends Controller
      */
     public function store(Request $request)
     {
-        $product = $this->validate(request(), [
+        $this->validate(request(), [
             'nama_outlet' => 'required',
             'lokasi_outlet' => 'required',
             'nama_pj' => 'required'
-            ]);
-            Outlet::create($product);
-            return redirect('outlet')->with('success', 'Outlet berhasil ditambahkan');;
+        ]);
+        $req = Request::create('api/outlet', 'POST', [], [], [], [], $request->getContent());
+        $response = Route::dispatch($req);
+        if ($response->status() >= 400) {
+            return redirect('outlet')->with('failed', 'Outlet gagal ditambahkan');
+        }
+        return redirect('outlet')->with('success', 'Outlet berhasil ditambahkan');;
     }
 
     /**
@@ -64,8 +70,10 @@ class OutletController extends Controller
      */
     public function edit($id)
     {
-        $product = Outlet::find($id);
-        return view('outlet.edit',compact('product','id'));
+        $request = Request::create("api/outlet/$id", 'GET');
+        $response = Route::dispatch($request);
+        $product = json_decode($response->getContent());
+        return view('outlet.edit', compact('product', 'id'));
     }
 
     /**
@@ -77,17 +85,18 @@ class OutletController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Outlet::find($id);
         $this->validate(request(), [
-        'nama_outlet' => 'required',
-        'lokasi_outlet' => 'required',
-        'nama_pj' => 'required'
+            'nama_outlet' => 'required',
+            'lokasi_outlet' => 'required',
+            'nama_pj' => 'required'
         ]);
-        $product->nama_outlet = $request->get('nama_outlet');
-        $product->lokasi_outlet = $request->get('lokasi_outlet');
-        $product->nama_pj = $request->get('nama_pj');
-        $product->save();
-        return redirect('outlet')->with('success','Outlet berhasil diperbarui');
+        $request->merge(['id' => $id]);
+        $req = Request::create('api/outlet', 'PUT', [], [], [], [], $request->getContent());
+        $response = Route::dispatch($req);
+        if ($response->status() >= 400) {
+            return redirect('outlet')->with('failed', 'Outlet gagal diperbarui');
+        }
+        return redirect('outlet')->with('success', 'Outlet berhasil diperbarui');
     }
 
     /**
@@ -98,8 +107,11 @@ class OutletController extends Controller
      */
     public function destroy($id)
     {
-        $product = Outlet::find($id);
-        $product->delete();
-        return redirect('outlet')->with('success','Outlet berhasil dihapus');
+        $request = Request::create("api/outlet/$id", 'DELETE');
+        $response = Route::dispatch($request);
+        if ($response->status() >= 400) {
+            return redirect('outlet')->with('failed', 'Outlet gagal dihapus');
+        }
+        return redirect('outlet')->with('success', 'Outlet berhasil dihapus');
     }
 }
