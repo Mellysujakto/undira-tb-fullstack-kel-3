@@ -93,37 +93,64 @@
                 </div>
             </nav>
         </header>
-        <main class="py-4">
-            @yield('content')
-        </main>
-        <footer>
-            @yield('additional-footer')
-            <div class="p-5 rounded-3 bg-primary">
-                <div class="row ">
-                    <div class="col-md-4 text-white">
-                        <h2 class="">Sales Visit</h2>
-                        <p>Jl. Mana Saja dot Com</p>
-                        <p>+62 21-832-83</p>
-                    </div>
-                    <div class="col-md-4 text-white">
-                        <h5>Partner</h5>
-                        <ul>
-                            <li>Logo</li>
-                            <li>Logo</li>
-                            <li>Logo</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 text-white">
-                        <h5>Useful Links</h5>
-                        <ul>
-                            <li>Link</li>
-                            <li>Link</li>
-                            <li>Link</li>
-                        </ul>
-                    </div>
+
+        @if ($errors->any())
+            <div style="padding: 20px">
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
-        </footer>
+        @endif
+        @if (\Session::has('success'))
+            <div style="padding: 20px">
+                <div class="alert alert-success">
+                    <p>{{ \Session::get('success') }}</p>
+                </div>
+            </div>
+        @endif
+        @if (\Session::has('failed'))
+            <div style="padding: 20px">
+                <div class="alert alert-danger">
+                    <p>{{ \Session::get('failed') }}</p>
+                </div>
+            </div>
+        @endif
+    </div>
+    <main class="py-4">
+        @yield('content')
+    </main>
+    <footer>
+        @yield('additional-footer')
+        <div class="p-5 rounded-3 bg-primary">
+            <div class="row ">
+                <div class="col-md-4 text-white">
+                    <h2 class="">Sales Visit</h2>
+                    <p>Jl. Mana Saja dot Com</p>
+                    <p>+62 21-832-83</p>
+                </div>
+                <div class="col-md-4 text-white">
+                    <h5>Partner</h5>
+                    <ul>
+                        <li>Logo</li>
+                        <li>Logo</li>
+                        <li>Logo</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-white">
+                    <h5>Useful Links</h5>
+                    <ul>
+                        <li>Link</li>
+                        <li>Link</li>
+                        <li>Link</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     </div>
 </body>

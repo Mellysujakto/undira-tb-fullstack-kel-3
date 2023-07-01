@@ -1,27 +1,11 @@
 @extends('layouts.app')
 
-@section('title','Tambah Data Sales')
+@section('title', 'Tambah Data Sales')
 
 @section('content')
-<div class="p-5 mb-3">
-    <div class="container">
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div><br />
-        @endif
-        @if (\Session::has('success'))
-        <div class="alert alert-success">
-            <p>{{ \Session::get('success') }}</p>
-        </div><br />
-        @endif
-
-        <form action="{{url('sales')}}" method="post">
-            {{csrf_field()}}
+    <div class="p-5 mb-3">
+        <form action="{{ url('sales') }}" method="post">
+            {{ csrf_field() }}
             <div class="mb-3 row">
                 <label for="nama_sales" class="col-2 col-form-label">Nama Sales</label>
                 <div class="col-10">
@@ -42,7 +26,7 @@
             </div>
         </form>
     </div>
-</div>
+    </div>
 @endsection
 
 
