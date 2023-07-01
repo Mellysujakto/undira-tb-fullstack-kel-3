@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sales;
+use App\Http\Client\HttpClient;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
@@ -14,7 +14,8 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $products = Sales::all()->toArray();
+        $response = HttpClient::get('api/user/sales');
+        $products = json_decode($response->getContent(), true);
         return view('sales.index', compact('products'));
     }
 
@@ -36,12 +37,15 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        $product = $this->validate(request(), [
-            'nama_sales' => 'required',
-            'no_hp' => 'required'
-            ]);
-            Sales::create($product);
-            return redirect('sales')->with('success', 'Sales berhasil ditambahkan');;
+        $this->validate(request(), [
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+        $response = HttpClient::post('api/user', [], [], [], [], $request->getContent());
+        if ($response->status() >= 400) {
+            return redirect('sales')->with('failed', 'Sales gagal ditambahkan');
+        }
+        return redirect('sales')->with('success', 'Sales berhasil ditambahkan');;
     }
 
     /**
@@ -63,8 +67,9 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-        $product = Sales::find($id);
-        return view('sales.edit',compact('product','id'));
+        $response = HttpClient::get("api/user/$id");
+        $product = json_decode($response->getContent());
+        return view('sales.edit', compact('product', 'id'));
     }
 
     /**
@@ -76,15 +81,16 @@ class SalesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Sales::find($id);
         $this->validate(request(), [
-        'nama_sales' => 'required',
-        'no_hp' => 'required'
+            'name' => 'required',
+            'email' => 'required',
         ]);
-        $product->nama_sales = $request->get('nama_sales');
-        $product->no_hp = $request->get('no_hp');
-        $product->save();
-        return redirect('sales')->with('success','Sales berhasil diperbarui');
+        $request->merge(['id' => $id]);
+        $response = HttpClient::put('api/user', [], [], [], [], $request->getContent());
+        if ($response->status() >= 400) {
+            return redirect('sales')->with('success', 'Sales gagal diperbarui');
+        }
+        return redirect('sales')->with('success', 'Sales berhasil diperbarui');
     }
 
     /**
@@ -95,8 +101,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        $product = Sales::find($id);
-        $product->delete();
-        return redirect('sales')->with('success','Sales berhasil dihapus');
+        $response = HttpClient::delete("api/user/$id");
+        if ($response->status() >= 400) {
+            return redirect('sales')->with('failed', 'Sales gagal dihapus');
+        }
+        return redirect('sales')->with('success', 'Sales berhasil dihapus');
     }
 }

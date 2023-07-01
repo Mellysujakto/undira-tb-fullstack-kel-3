@@ -9,17 +9,17 @@
                 {{ csrf_field() }}
                 <input name="_method" type="hidden" value="PATCH">
                 <div class="mb-3 row">
-                    <label for="nama_sales" class="col-2 col-form-label">Nama Sales</label>
+                    <label for="name" class="col-2 col-form-label">Nama</label>
                     <div class="col-10">
-                        <input type="text" class="form-control" name="nama_sales" id="nama_sales"
-                            value="{{ $product->nama_sales }}">
+                        <input type="text" class="form-control" name="name" id="name"
+                            value="{{ $product->name }}">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="no_hp" class="col-2 col-form-label">HP</label>
+                    <label for="email" class="col-2 col-form-label">Email</label>
                     <div class="col-10">
-                        <input type="text" class="form-control" name="no_hp" id="no_hp"
-                            value="{{ $product->no_hp }}">
+                        <input type="text" class="form-control" name="email" id="email"
+                            value="{{ $product->email }}">
                     </div>
                 </div>
 

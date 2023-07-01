@@ -10,8 +10,8 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Nama Sales</th>
-                        <th scope="col">HP</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Email</th>
                         <th scope="col" colspan="2">Aksi</th>
                     </tr>
                 </thead>
@@ -22,8 +22,8 @@
                     @foreach ($products as $product)
                         <tr>
                             <td>{{ $no++ }}</td>
-                            <td>{{ $product['nama_sales'] }}</td>
-                            <td>{{ $product['no_hp'] }}</td>
+                            <td>{{ $product['name'] }}</td>
+                            <td>{{ $product['email'] }}</td>
                             <td><a href="{{ action('SalesController@edit', $product['id']) }}"
                                     class="btn btn-warning">Ubah</a>
                             </td>
