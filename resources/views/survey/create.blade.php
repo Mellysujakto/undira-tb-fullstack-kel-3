@@ -8,17 +8,6 @@
             <form action="{{ url('survey') }}" method="post">
                 {{ csrf_field() }}
                 <div class="mb-3 row">
-                    <label for="nama_sales" class="col-2 col-form-label">Nama Sales</label>
-                    <div class="col-10">
-                        <select class="form-select" name="nama_sales" id="nama_sales">
-                            <option selected>Pilih Sales</option>
-                            @foreach ($sales as $sale)
-                                <option value="{{ $sale['nama_sales'] }}">{{ $sale['nama_sales'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="mb-3 row">
                     <label for="nama_barang" class="col-2 col-form-label">Nama Barang</label>
                     <div class="col-10">
                         <select class="form-select" name="nama_barang" id="nama_barang">
@@ -50,12 +39,6 @@
                     <label for="jumlah_display" class="col-2 col-form-label">Jumlah Display</label>
                     <div class="col-10">
                         <input type="number" class="form-control" name="jumlah_display" id="jumlah_display">
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="visit_datetime" class="col-2 col-form-label">Tanggal Visit</label>
-                    <div class="col-10">
-                        <input type="datetime-local" class="form-control" name="visit_datetime" id="visit_datetime">
                     </div>
                 </div>
 
