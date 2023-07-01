@@ -1,6 +1,9 @@
 <?php
 
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,14 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/barang', 'API\BarangAPIController@list');
+Route::get('/barang/{id}', 'API\BarangAPIController@getById');
+Route::post('/barang', 'API\BarangAPIController@create');
+Route::put('/barang', 'API\BarangAPIController@update');
+Route::delete('/barang/{id}', 'API\BarangAPIController@delete');
