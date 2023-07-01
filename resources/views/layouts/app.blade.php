@@ -36,15 +36,17 @@
                         @guest
                         @else
                             <ul class="navbar-nav me-auto mt-2 mt-lg-0 ">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownId"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Master</a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                        <a class="dropdown-item" href="/sales">Sales</a>
-                                        <a class="dropdown-item" href="/barang">Barang</a>
-                                        <a class="dropdown-item" href="/outlet">Outlet</a>
-                                    </div>
-                                </li>
+                                @if (Auth::user()->role == 'admin')
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownId"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Master</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                            <a class="dropdown-item" href="/sales">Sales</a>
+                                            <a class="dropdown-item" href="/barang">Barang</a>
+                                            <a class="dropdown-item" href="/outlet">Outlet</a>
+                                        </div>
+                                    </li>
+                                @endif
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownId"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Transaksi</a>
