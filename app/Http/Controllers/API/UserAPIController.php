@@ -52,7 +52,7 @@ class UserAPIController extends Controller
             $role = $request->get('role');
         }
 
-        $password = 'sales123';
+        $password = 'Test1234';
 
         if ($request->get('password') != null) {
             $password = $request->get('password');

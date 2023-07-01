@@ -12,6 +12,8 @@
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Role</th>
                         <th scope="col" colspan="2">Aksi</th>
                     </tr>
                 </thead>
@@ -24,6 +26,8 @@
                             <td>{{ $no++ }}</td>
                             <td>{{ $product['name'] }}</td>
                             <td>{{ $product['email'] }}</td>
+                            <td>{{ $product['password'] }}</td>
+                            <td>{{ $product['role'] }}</td>
                             <td><a href="{{ action('SalesController@edit', $product['id']) }}"
                                     class="btn btn-warning">Ubah</a>
                             </td>
