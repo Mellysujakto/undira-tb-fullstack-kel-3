@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Client\HttpClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 class OutletController extends Controller
 {
@@ -14,8 +14,7 @@ class OutletController extends Controller
      */
     public function index()
     {
-        $request = Request::create('api/outlet', 'GET');
-        $response = Route::dispatch($request);
+        $response = HttpClient::get('api/outlet');
         $products = json_decode($response->getContent(), true);
         return view('outlet.index', compact('products'));
     }
@@ -43,8 +42,7 @@ class OutletController extends Controller
             'lokasi_outlet' => 'required',
             'nama_pj' => 'required'
         ]);
-        $req = Request::create('api/outlet', 'POST', [], [], [], [], $request->getContent());
-        $response = Route::dispatch($req);
+        $response = HttpClient::post('api/outlet', [], [], [], [], $request->getContent());
         if ($response->status() >= 400) {
             return redirect('outlet')->with('failed', 'Outlet gagal ditambahkan');
         }
@@ -70,8 +68,7 @@ class OutletController extends Controller
      */
     public function edit($id)
     {
-        $request = Request::create("api/outlet/$id", 'GET');
-        $response = Route::dispatch($request);
+        $response = HttpClient::get("api/outlet/$id");
         $product = json_decode($response->getContent());
         return view('outlet.edit', compact('product', 'id'));
     }
@@ -91,8 +88,7 @@ class OutletController extends Controller
             'nama_pj' => 'required'
         ]);
         $request->merge(['id' => $id]);
-        $req = Request::create('api/outlet', 'PUT', [], [], [], [], $request->getContent());
-        $response = Route::dispatch($req);
+        $response = HttpClient::put('api/outlet', [], [], [], [], $request->getContent());
         if ($response->status() >= 400) {
             return redirect('outlet')->with('failed', 'Outlet gagal diperbarui');
         }
@@ -107,8 +103,7 @@ class OutletController extends Controller
      */
     public function destroy($id)
     {
-        $request = Request::create("api/outlet/$id", 'DELETE');
-        $response = Route::dispatch($request);
+        $response = HttpClient::delete("api/outlet/$id");
         if ($response->status() >= 400) {
             return redirect('outlet')->with('failed', 'Outlet gagal dihapus');
         }

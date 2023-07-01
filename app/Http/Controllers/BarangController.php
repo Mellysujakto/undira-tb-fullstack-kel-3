@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Client\HttpClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 class BarangController extends Controller
 {
@@ -14,9 +14,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $request = Request::create('api/barang', 'GET');
-        // $request->headers->set('Authorization', 'Bearer' . 'Z2nAm1p9KKKQYqgsMfENevBXkFP8HBazRiXO90tMiuyWX9V3FIf5gZiD1fLM');
-        $response = Route::dispatch($request);
+        $response = HttpClient::get('api/barang');
         $products = json_decode($response->getContent(), true);
         return view('barang.index', compact('products'));
     }
@@ -45,8 +43,7 @@ class BarangController extends Controller
             'stok' => 'required',
             'harga_barang' => 'required'
         ]);
-        $req = Request::create('api/barang', 'POST', [], [], [], [], $request->getContent());
-        $response = Route::dispatch($req);
+        $response = HttpClient::post('api/barang', [], [], [], [], $request->getContent());
         if ($response->status() >= 400) {
             return redirect('barang')->with('failed', 'Barang gagal ditambahkan');
         }
@@ -72,8 +69,7 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        $request = Request::create("api/barang/$id", 'GET');
-        $response = Route::dispatch($request);
+        $response = HttpClient::get("api/barang/$id");
         $product = json_decode($response->getContent());
         return view('barang.edit', compact('product', 'id'));
     }
@@ -94,8 +90,7 @@ class BarangController extends Controller
             'harga_barang' => 'required'
         ]);
         $request->merge(['id' => $id]);
-        $req = Request::create('api/barang', 'PUT', [], [], [], [], $request->getContent());
-        $response = Route::dispatch($req);
+        $response = HttpClient::put('api/barang', [], [], [], [], $request->getContent());
         if ($response->status() >= 400) {
             return redirect('barang')->with('failed', 'Barang gagal diperbarui');
         }
@@ -110,8 +105,7 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        $request = Request::create("api/barang/$id", 'DELETE');
-        $response = Route::dispatch($request);
+        $response = HttpClient::delete("api/barang/$id");
         if ($response->status() >= 400) {
             return redirect('barang')->with('failed', 'Barang gagal dihapus');
         }
