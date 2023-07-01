@@ -14,7 +14,21 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $response = HttpClient::get('api/user/sales');
+        $response = HttpClient::get("api/user/sales");
+        $products = json_decode($response->getContent(), true);
+        return view('sales.index', compact('products'));
+    }
+
+    public function salesAdmin()
+    {
+        $response = HttpClient::get("api/user/admin");
+        $products = json_decode($response->getContent(), true);
+        return view('sales.index', compact('products'));
+    }
+
+    public function salesAll()
+    {
+        $response = HttpClient::get("api/user");
         $products = json_decode($response->getContent(), true);
         return view('sales.index', compact('products'));
     }

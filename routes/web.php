@@ -17,6 +17,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('home');
     });
+    Route::get('sales/admin', 'SalesController@salesAdmin')->name('sales/admin');
+    Route::get('sales/all', 'SalesController@salesAll')->name('sales/all');
 
     Route::resource('sales', 'SalesController');
     Route::resource('barang', 'BarangController');

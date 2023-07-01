@@ -5,6 +5,12 @@
 @section('content')
     <div class="p-4 mb-3">
         <h2>Data Sales</h2>
+        <div style="padding-bottom: 10px">
+            <a name="" id="" class="btn btn-primary btn-sm" href="/sales" role="button">Sales Only</a>
+            <a name="" id="" class="btn btn-primary btn-sm" href="{{ route('sales/admin') }}" role="button">Admin Only</a>
+            <a name="" id="" class="btn btn-primary btn-sm" href="{{ route('sales/all') }}" role="button">All(Sales and
+                Admin)</a>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
