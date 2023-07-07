@@ -16,6 +16,12 @@ class SurveyAPIController extends Controller
         return response()->json($list, 200);
     }
 
+    public function listByName($name)
+    {
+        $list = SurveyStock::all()->where('nama_sales', $name);
+        return response()->json($list, 200);
+    }
+
     public function getById($id)
     {
         $detail = SurveyStock::find($id);

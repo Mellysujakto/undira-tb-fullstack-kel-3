@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth.api'], function () {
     Route::delete('/outlet/{id}', 'API\OutletAPIController@delete');
 
     Route::get('/survey', 'API\SurveyAPIController@list');
+    Route::get('/survey/name/{name}', 'API\SurveyAPIController@listByName');
     Route::get('/survey/{id}', 'API\SurveyAPIController@getById');
     Route::post('/survey', 'API\SurveyAPIController@create');
     Route::put('/survey', 'API\SurveyAPIController@update');

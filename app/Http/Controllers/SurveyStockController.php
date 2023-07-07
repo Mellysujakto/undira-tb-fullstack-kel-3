@@ -15,7 +15,13 @@ class SurveyStockController extends Controller
      */
     public function index()
     {
-        $response = HttpClient::get('api/survey');
+        $response = null;
+        if (Auth::user()->role == 'admin') {
+            $response = HttpClient::get('api/survey');
+        } else {
+            $salesName = Auth::user()->name;
+            $response = HttpClient::get("api/survey/name/$salesName");
+        }
         $products = json_decode($response->getContent(), true);
         return view('survey.index', compact('products'));
     }
