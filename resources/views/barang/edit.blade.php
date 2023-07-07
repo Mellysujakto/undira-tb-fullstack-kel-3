@@ -25,14 +25,14 @@
                 <div class="mb-3 row">
                     <label for="stok" class="col-2 col-form-label">Stok</label>
                     <div class="col-10">
-                        <input type="number" class="form-control" name="stok" id="stok"
+                        <input type="number" min="0" step="1" oninput="validity.valid||(value='');" class="form-control" name="stok" id="stok"
                             value="{{ $product->stok }}">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="harga_barang" class="col-2 col-form-label">Harga Barang</label>
                     <div class="col-10">
-                        <input type="number" class="form-control" name="harga_barang" id="harga_barang"
+                        <input type="number" min="0" step="1" oninput="validity.valid||(value='');" class="form-control" name="harga_barang" id="harga_barang"
                             value="{{ $product->harga_barang }}">
                     </div>
                 </div>
