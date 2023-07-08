@@ -13,7 +13,7 @@
                         <th scope="col">Kode Barang</th>
                         <th scope="col">Nama Barang</th>
                         <th scope="col">Stok</th>
-                        <th scope="col">Harga Barang</th>
+                        <th scope="col">Harga Barang (Rp)</th>
                         <th scope="col" colspan="2">Aksi</th>
                     </tr>
                 </thead>

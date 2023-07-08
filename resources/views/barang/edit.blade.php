@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="harga_barang" class="col-2 col-form-label">Harga Barang</label>
+                    <label for="harga_barang" class="col-2 col-form-label">Harga Barang (Rp)</label>
                     <div class="col-10">
                         <input type="number" min="0" step="1" oninput="validity.valid||(value='');" class="form-control" name="harga_barang" id="harga_barang"
                             value="{{ $product->harga_barang }}">
