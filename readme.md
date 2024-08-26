@@ -26,6 +26,6 @@ Sales Visit is a website that provides survey stocks on each store.
 
 2. Import `sales_visit.sql` as this project's DB.
 
-3. Check DB whether up to date or not by running `php artisan migrate`.
+3. Check DB whether up to date or not by running `php artisan migrate`. If you are facing a problem related key, you can run `php artisan key:generate` to resolve the problem.
 
 4. Run project `php artisan serve`.
